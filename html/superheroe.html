@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+
+    <style>
+		#superhero {
+			display: flex;
+			flex-direction: row;
+			align-items: center;
+			margin: 20px;
+		}
+
+		#superhero img {
+			width: 300px;
+			height: 450px;
+			border-radius: 5px;
+			margin-right: 20px;
+			box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
+		}
+
+		#superhero h1 {
+			font-size: 28px;
+			font-weight: bold;
+			margin: 0;
+		}
+
+		#superhero p {
+			font-size: 16px;
+			text-align: justify;
+			margin: 10px 0;
+		}
+
+		#superhero ul {
+			list-style-type: none;
+			padding: 0;
+			margin: 10px 0;
+		}
+
+		#superhero ul li {
+			font-size: 14px;
+			padding: 5px;
+		}
+	</style>
+</head>
+<body>
+    
+    <div id="superhero"></div>
+
+    <script>
+
+
+
+            const urlParams = new URLSearchParams(window.location.search);
+            const superheroId = urlParams.get('id');
+            console.log(superheroId);
+
+            const publicKey = 'd8b02dc109d7a677a61793797397e470';
+            const privateKey = 'your_private_key';
+
+            const timestamp = "1000";
+            const hash = "15aa89127ec7f5cc41b3362aa8c68a9b";
+
+            const url = `https://gateway.marvel.com/v1/public/characters/${superheroId}?apikey=${publicKey}&ts=${timestamp}&hash=${hash}`;
+
+		fetch(url)
+			.then(response => response.json())
+			.then(data => {
+				const superhero = data.data.results[0];
+				const container = document.getElementById('superhero');
+
+				const image = document.createElement('img');
+				image.src = `${superhero.thumbnail.path}/standard_xlarge.${superhero.thumbnail.extension}`;
+				image.alt = superhero.name;
+
+				const details = document.createElement('div');
+
+				const name = document.createElement('h1');
+				name.textContent = superhero.name;
+
+				const description = document.createElement('p');
+				description.textContent = superhero.description;
+
+				const comics = document.createElement('ul');
+				superhero.comics.items.forEach(comic => {
+					const comicItem = document.createElement('li');
+					comicItem.textContent = comic.name;
+					comics.appendChild(comicItem);
+				});
+
+				details.appendChild(name);
+				details.appendChild(description);
+				details.appendChild(comics);
+
+				container.appendChild(image);
+				container.appendChild(details);
+			});
+	</script>
+</body>
+</html>

@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <h1 style="text-align:center ;">Personajes marvel</h1>
+    <style >
+		.card {
+            align-items: center; 
+			display: inline-block;
+			width: 300px;
+			margin: 20px;
+			border: 1px solid #ccc;
+			border-radius: 5px;
+			box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
+            
+		}
+
+		.card img {
+            align-items: center; 
+			display: block;
+			width: 100%;
+			height: auto;
+			border-radius: 5px 5px 0 0;
+		}
+
+		.card h2 {
+            align-items: center; 
+			font-size: 16px;
+			font-weight: enter;
+			margin: 10px 0;
+		}
+
+		.card p {
+            align-items: center; 
+			font-size: 14px;
+			text-align: justify;
+			padding: 10px;
+			margin: 0;
+		}
+
+		.card ul {
+            align-items: center; 
+			list-style-type: none;
+			padding: 0;
+			margin: 10px 0;
+		}
+
+		.card ul li {
+            align-items: center; 
+			font-size: 12px;
+			padding: 5px;
+		}
+	</style>
+</head>
+<body>
+
+
+
+    <div id="superheroes"></div>
+
+    
+    <script>
+    var apikey = "d8b02dc109d7a677a61793797397e470";
+    var ts = "1000";
+    var hash = "15aa89127ec7f5cc41b3362aa8c68a9b";
+    var url = 'http://gateway.marvel.com/v1/public/characters?ts=' + ts +"&apikey=" + apikey + "&hash=" + hash;
+    
+    fetch(url)
+    .then(response => response.json())
+	.then(data => {
+				const superheroes = data.data.results;
+				const container = document.getElementById('superheroes');
+
+				superheroes.forEach(hero => {
+					const card = document.createElement('div');
+					card.classList.add('card');
+
+					const image = document.createElement('img');
+					image.src = `${hero.thumbnail.path}/standard_xlarge.${hero.thumbnail.extension}`;
+					image.alt = hero.name;
+
+					const name = document.createElement('h2');
+					name.textContent = hero.name;
+					
+
+					card.appendChild(image);
+					card.appendChild(name);
+                    
+
+					card.addEventListener('click', () => {
+						window.location.href = `superheroe.html?id=${hero.id}`;
+					});
+
+					container.appendChild(card);
+				});
+			});
+	</script>
+</body>
+</html>
+
+
